@@ -199,6 +199,46 @@
   echo '<br>';
   $myCar = (array) $myCar;
   var_dump($myCar);
+
+
+  $a = 5;       // Integer
+  $b = 5.34;    // Float
+  $c = "hello"; // String
+  $d = true;    // Boolean
+  $e = NULL;    // NULL
+
+  $a = (object) $a;
+  $b = (object) $b;
+  $c = (object) $c;
+  $d = (object) $d;
+  $e = (object) $e;
+
+  echo "<h3>Object</h3>";
+  echo "<p>a</p>";
+  var_dump($a);
+  echo '<p>b</p>';
+  var_dump($b);
+  echo '<p>c</p>';
+  var_dump($c);
+  echo '<p>d</p>';
+  var_dump($d);
+  echo '<p>e</p>';
+  var_dump($e);
+
+  $a = array("Volvo", "BMW", "Toyota"); // indexed array
+  $b = array("Peter"=>"35", "Ben"=>"37", "Joe"=>"43"); // associative array
+
+  $a = (object) $a;
+  $b = (object) $b;
+
+  echo "<h3>Object</h3>";
+  echo "<p>a</p>";
+  var_dump($a);
+  echo '<p>b</p>';
+  var_dump($b);
+
+  echo '<br>';  
+  echo '<br>';
 ?>
 
 </body>
