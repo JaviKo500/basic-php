@@ -14,30 +14,33 @@
     $name = $email = $website = $comment = $gender = "";
     $nameErr = $emailErr = $websiteErr = $commentErr = $genderErr = "";
     if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
-      if ( empty($_POST['name']) ) {
+      $name = testInput($_POST['name'] ?? '');
+      if ( empty($name) ) {
         $nameErr = "Name is required";
-      } else {
-        $name = testInput($_POST['name'] ?? 'Not specified');
+      } elseif ( !preg_match("/^[a-zA-Z-' ]*$/", $name) ) {
+        $nameErr = "Name can only contain letters, spaces, and hyphens";
       }
+      $email = testInput($_POST['email'] ?? '');
       if ( empty($_POST['email']) ) {
         $emailErr = "E-mail is required";
-      } else {
-        $email = testInput($_POST['email'] ?? 'Not specified');
+      } elseif (!filter_var( $email, FILTER_VALIDATE_EMAIL ))  {
+        $emailErr = "E-mail is invalid";
       }
-      if ( empty($_POST['website']) ) {
+      $website = testInput($_POST['website'] ?? '');
+      if ( empty($website) ) {
         $website = "";
-      } else {
-        $website = testInput($_POST['website'] ?? 'Not specified');
+      } elseif (!preg_match("/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i",$website)) {
+        $websiteErr = "Invalid URL";
       }
       if ( empty($_POST['comment']) ) {
         $comment = "";
       } else {
-        $comment = testInput($_POST['comment'] ?? 'Not specified');
+        $comment = testInput($_POST['comment'] ?? '');
       }
       if ( empty($_POST['gender']) ) {
         $genderErr = "Gender is required";
       } else {
-        $gender = testInput($_POST['gender'] ?? 'Not specified');
+        $gender = testInput($_POST['gender'] ?? '');
       }
     }
 
@@ -54,17 +57,30 @@
     Name: <input type="text" name="name" required value="<?php echo $name;?>">
     <span class="error">* <?php echo $nameErr;?></span>
     <br><br>
-    E-mail: <input type="text" name="email" required value="<?php echo $email;?>">
+    E-mail: <input type="text" name="email" value="<?php echo $email;?>">
     <span class="error">* <?php echo $emailErr;?></span>
     <br><br>
     Website: <input type="text" name="website" value="<?php echo $website;?>">
+    <span class="error">* <?php echo $websiteErr;?></span>
     <br><br>
-    Comment: <textarea name="comment" rows="5" cols="40" value="<?php echo $comment;?>"></textarea>
+    Comment: <textarea name="comment" rows="5" cols="40"><?php echo $comment;?></textarea>
     <br><br>
     Gender:
-    <input type="radio" name="gender" value="female">Female
-    <input type="radio" name="gender" value="male">Male
-    <input type="radio" name="gender" value="other">Other
+    <input 
+      type="radio" 
+      name="gender" 
+      <?php if( isset($gender) && $gender === 'female' ) echo 'checked' ?>
+      value="female">Female
+    <input 
+      type="radio" 
+      name="gender" 
+      <?php if( isset($gender) && $gender === 'male' ) echo 'checked' ?>
+      value="male">Male
+    <input 
+      type="radio" 
+      name="gender" 
+      <?php if( isset($gender) && $gender === 'other' ) echo 'checked' ?>
+      value="other">Other
     <span class="error">* <?php echo $genderErr;?></span>
     <br><br>
     <input type="submit" name="submit" value="Submit">  
